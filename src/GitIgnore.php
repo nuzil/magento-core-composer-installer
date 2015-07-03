@@ -35,7 +35,7 @@ class GitIgnore
      * @param array $directoriesToIgnoreEntirely
      * @param bool $gitIgnoreAppend
      */
-    public function __construct($fileLocation, array $directoriesToIgnoreEntirely, $gitIgnoreAppend = true)
+    public function __construct($fileLocation, $generateGitIgnore, array $directoriesToIgnoreEntirely, $gitIgnoreAppend = true)
     {
         $this->gitIgnoreLocation = $fileLocation;
 
@@ -45,7 +45,7 @@ class GitIgnore
 
         $this->directoriesToIgnoreEntirely = $directoriesToIgnoreEntirely;
 
-        $this->addEntriesForDirectoriesToIgnoreEntirely();
+        if($generateGitIgnore) $this->addEntriesForDirectoriesToIgnoreEntirely();
     }
 
     /**
