@@ -232,7 +232,7 @@ class CoreManager implements PluginInterface, EventSubscriberInterface
             $options->appendToGitIgnore()
         );
 
-        $installer = new CoreInstaller($exclude, $gitIgnore, $this->filesystem);
+        $installer = new CoreInstaller($exclude, $options->getGenerateGitIgnore(), $gitIgnore, $this->filesystem);
         return $installer;
     }
 }

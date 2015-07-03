@@ -115,6 +115,8 @@ class Options
      */
     protected $appendToGitIgnore = true;
 
+    protected $generateGitIgnore = false;
+
     /**
      * Magento Root Directory
      *
@@ -130,6 +132,10 @@ class Options
         $coreInstallerOptions = array();
         if (isset($packageExtra['magento-core-deploy']) && is_array($packageExtra['magento-core-deploy'])) {
             $coreInstallerOptions = $packageExtra['magento-core-deploy'];
+        }
+
+        if(isset($coreInstallerOptions['generate-git-ignore'])) {
+            $this->generateGitIgnore = $coreInstallerOptions['generate-git-ignore'];
         }
 
         //merge excludes from root package composer.json file with default excludes
@@ -192,4 +198,13 @@ class Options
     {
         return $this->magentoRootDir;
     }
+
+    /**
+     * @return string
+     */
+    public function getGenerateGitIgnore()
+    {
+        return $this->generateGitIgnore;
+    }
+
 }

@@ -24,6 +24,8 @@ class CoreInstaller
      */
     protected $gitIgnore;
 
+    protected $generateGitIgnore;
+
     /**
      * @var Filesystem
      */
@@ -34,11 +36,12 @@ class CoreInstaller
      * @param GitIgnore $gitIgnore
      * @param Filesystem $fileSystem
      */
-    public function __construct(Exclude $exclude, GitIgnore $gitIgnore, Filesystem $fileSystem)
+    public function __construct(Exclude $exclude, $generateGitIgnore, GitIgnore $gitIgnore, Filesystem $fileSystem)
     {
-        $this->exclude      = $exclude;
-        $this->gitIgnore    = $gitIgnore;
-        $this->fileSystem   = $fileSystem;
+        $this->exclude              = $exclude;
+        $this->generateGitIgnore    = $generateGitIgnore;
+        $this->gitIgnore            = $gitIgnore;
+        $this->fileSystem           = $fileSystem;
     }
 
     /**
@@ -65,7 +68,7 @@ class CoreInstaller
             }
 
             copy($item, $destinationFile);
-            $this->gitIgnore->addEntry('/' . $iterator->getSubPathName());
+            if($this->generateGitIgnore) $this->gitIgnore->addEntry('/' . $iterator->getSubPathName());
         }
     }
 
@@ -85,7 +88,7 @@ class CoreInstaller
             }
 
             if (!file_exists($destinationFile)) {
-                $this->gitIgnore->removeEntry($iterator->getSubPathName());
+                if($this->generateGitIgnore) $this->gitIgnore->removeEntry($iterator->getSubPathName());
                 continue;
             }
 
@@ -99,10 +102,10 @@ class CoreInstaller
             }
 
             $this->fileSystem->unlink($destinationFile);
-            $this->gitIgnore->removeEntry('/' . $iterator->getSubPathName());
+            if($this->generateGitIgnore) $this->gitIgnore->removeEntry('/' . $iterator->getSubPathName());
         }
 
-        $this->gitIgnore->removeIgnoreDirectories();
+        if($this->generateGitIgnore) $this->gitIgnore->removeIgnoreDirectories();
     }
 
     /**
